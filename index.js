@@ -1,5 +1,5 @@
 const { program } = require("commander");
-require('cross-env')
+
 const {
   addContact,
   getContactById,
@@ -7,37 +7,36 @@ const {
   removeContact,
 } = require("./contacts");
 program
-  .option('-a, --action <type>')
-  .option("-i,--id <type>")
-  .option("-n, --name <type> ")
-  .option("-e, --email <type> ")
-  .option("-p,--phone <type>");
+  .option("-a, --action <type>", "Action type: list | get | add | remove")
+  .option("-i,--id <type>", "Contact id")
+  .option("-n, --name <type> ", "Contact name")
+  .option("-e, --email <type> ", "Contact email")
+  .option("-p,--phone <type>", "Contact phone");
+
 program.parse(process.argv);
 
 const options = program.opts();
-if (options.action === 'a') console.log("daffffffffff");
-console.dir(options);
-function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      // ...
-      break;
+      const contacts = await listContacts()
+     return console.log(contacts);
 
     case "get":
-      // ... id
-      break;
+      const contact = await getContactById(options.id)
+      return console.log(contact)
 
     case "add":
-      // ... name email phone
-      break;
+     const newContact= await addContact(name,email,phone)
+      return console.log(newContact)
 
     case "remove":
-      // ... id
-      break;
+      const removedContact = await removeContact(id)
+      return console.log(removedContact)
 
     default:
       console.warn("\x1B[31m Unknown action type!");
   }
 }
 
-// invokeAction(argv);
+invokeAction(options);
