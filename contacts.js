@@ -5,6 +5,12 @@ const path = require("path");
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
 // TODO: задокументувати кожну функцію
+/**
+ * Read and return contact
+ * @param {void} void
+ * @returns {object[]}Contacts object array
+ */
+
 async function listContacts() {
   try {
     const contacts = await fs.readFile(contactsPath);
@@ -12,9 +18,13 @@ async function listContacts() {
   } catch (error) {
     console.log(error);
   }
-
-  // ...твій код. Повертає масив контактів.
 }
+
+/**
+ * Find contact object by ID and return it | if contact not finded return null
+ * @param {number} contactId
+ * @returns {Promise<object| null>}
+ */
 
 async function getContactById(contactId) {
   try {
@@ -24,9 +34,13 @@ async function getContactById(contactId) {
   } catch (error) {
     console.log(error);
   }
-
-  // ...твій код. Повертає об'єкт контакту з таким id. Повертає null, якщо контакт з таким id не знайдений.
 }
+
+/**
+ * find contact by id and return it | if contact not finded return null
+ * @param {number} contactId
+ * @returns {object|null}
+ */
 
 async function removeContact(contactId) {
   try {
@@ -41,21 +55,25 @@ async function removeContact(contactId) {
   } catch (error) {
     console.log(error);
   }
-
-  // ...твій код. Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
 }
 
+/**
+ * Create new contact and add it to contacts 'database'
+ * @param {string} name name to new contact
+ * @param {string} email email to new contact
+ * @param {number} phone phone to new contact
+ * @returns {object}
+ */
 async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts();
     const newContact = { id: nanoid(), name, email, phone };
     contacts.push(newContact);
     await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-    return newContact; 
+    return newContact;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-  // ...твій код. Повертає об'єкт доданого контакту.
 }
 
 module.exports = {
